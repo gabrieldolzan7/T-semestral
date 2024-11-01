@@ -1,23 +1,26 @@
 <?php
-include 'db.php';
+require_once 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $db = conectar();
+    $pdo = conectar();
+    $feedback = !empty($_POST['feedback']) ? $_POST['feedback'] : null;
+    $dispositivo_id = 1; // ID fixo para o dispositivo neste exemplo. Pode ser configurado conforme o ambiente real.
 
-    foreach ($_POST['resposta'] as $id_pergunta => $resposta) {
-        $feedback_textual = $_POST['feedback_textual'] ?? null;
+    try {
+        $pdo->beginTransaction();
 
-        $query = "INSERT INTO avaliacoes (id_pergunta, resposta, feedback_textual, id_setor, id_dispositivo) 
-                  VALUES (:id_pergunta, :resposta, :feedback_textual, 1, 1)";
-        $stmt = $db->prepare($query);
-        $stmt->execute([
-            ':id_pergunta' => $id_pergunta,
-            ':resposta' => $resposta,
-            ':feedback_textual' => $feedback_textual
-        ]);
+        // Iterar sobre cada pergunta e salvar a resposta
+        foreach ($_POST['resposta'] as $pergunta_id => $resposta) {
+            $stmt = $pdo->prepare("INSERT INTO avaliacoes (id_dispositivo, id_pergunta, resposta, feedback) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$dispositivo_id, $pergunta_id, $resposta, $feedback]);
+        }
+
+        $pdo->commit();
+        header("Location: ../public/obrigado.php");
+        exit;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        die("Erro ao salvar respostas: " . $e->getMessage());
     }
-
-    header('Location: ../public/obrigado.php');
-    exit;
 }
 ?>
