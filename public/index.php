@@ -29,7 +29,7 @@ try {
                             <label class="radio-label">
                                 <input type="radio" name="resposta[<?php echo $pergunta['id']; ?>]" value="<?php echo $i; ?>" required>
                                 <span class="radio-span" data-value="<?php echo $i; ?>"><?php echo $i; ?></span>
-                            </label>
+                             </label>
                         <?php endfor; ?>
                     </div>
                 </div>
