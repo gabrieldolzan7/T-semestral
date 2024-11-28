@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Agradecimento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obrigado!</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
 </head>
 <body>
-    <div class="formulario">
+    <div class="container">
         <h1>Obrigado pela sua avaliação!</h1>
-        <p>O Hospital Regional Alto Vale agradece sua resposta, ela é muito importante para nós, pois nos ajuda a melhorar continuamente nossos serviços.</p>
-        <a href="index.php">Voltar ao início</a>
+        <p>Sua opinião é muito importante para nós.</p>
+        <p>Você será redirecionado para a página inicial em alguns segundos.</p>
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        <a href="index.php">Clique aqui caso não seja redirecionado automaticamente.</a>
     </div>
 </body>
 </html>

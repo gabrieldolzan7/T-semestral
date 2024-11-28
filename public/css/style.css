@@ -1,88 +1,316 @@
+/* Estilo básico da página */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
+    height: 100vh;
 }
 
-.formulario {
+.container {
     width: 100%;
-    max-width: 600px;
-    padding: 20px;
-    background: #ffffff;
+    max-width: 700px;
+    padding: 50px;
+    background: white;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 h1 {
-    text-align: center;
+    font-size: 1.8em;
     color: #333;
-}
-
-.pergunta {
     margin-bottom: 20px;
 }
 
-.escala {
+p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Estilo para o formulário */
+form {
     display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
+    flex-direction: column;
+    gap: 25px;
 }
-
-.radio-label {
-    position: relative;
-    cursor: pointer;
-}
-
-.radio-label input[type="radio"] {
-    display: none;
-}
-
-.radio-span {
-    display: inline-block;
-    padding: 10px 15px;
-    border-radius: 4px;
-    font-weight: bold;
-    color: #fff;
-    text-align: center;
-}
-
-.radio-span[data-value="0"] { background-color: #FF0000; } /* Vermelho */
-.radio-span[data-value="1"] { background-color: #FF1A1A; }
-.radio-span[data-value="2"] { background-color: #FF3333; }
-.radio-span[data-value="3"] { background-color: #FF4D4D; }
-.radio-span[data-value="4"] { background-color: #FF6600; } /* Laranja */
-.radio-span[data-value="5"] { background-color: #FF9933; }
-.radio-span[data-value="6"] { background-color: #CCCC00; } /* Amarelo */
-.radio-span[data-value="7"] { background-color: #99CC00; }
-.radio-span[data-value="8"] { background-color: #66CC00; }
-.radio-span[data-value="9"] { background-color: #33CC33; }
-.radio-span[data-value="10"] { background-color: #00CC00; } /* Verde */
 
 textarea {
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px;
-    border-radius: 4px;
+    width: 94%;
+    padding: 20px;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    resize: vertical;
+    resize: none;
+    font-size: 1em;
+    margin-top: 15px;
 }
 
 button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #4CAF50;
+    background-color: #007bff;
+    color: white;
     border: none;
+    padding: 10px;
+    font-size: 1.1em;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #0056b3;
+}
+
+/* Layout dos quadrados */
+.escala {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.quadrado {
+    width: 50px;
+    height: 50px;
+    background-color: #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+}
+
+.quadrado span {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+}
+
+.quadrado:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Gradiente de cores nos quadrados */
+.quadrado:nth-child(1) { background-color: #FF0000; }
+.quadrado:nth-child(2) { background-color: #FF4500; }
+.quadrado:nth-child(3) { background-color: #FF8000; }
+.quadrado:nth-child(4) { background-color: #FFA500; }
+.quadrado:nth-child(5) { background-color: #FFD700; }
+.quadrado:nth-child(6) { background-color: #FFFF00; }
+.quadrado:nth-child(7) { background-color: #ADFF2F; }
+.quadrado:nth-child(8) { background-color: #7FFF00; }
+.quadrado:nth-child(9) { background-color: #32CD32; }
+.quadrado:nth-child(10) { background-color: #00FF00; }
+.quadrado:nth-child(11) { background-color: #008000; }
+
+/* Esconde os inputs do tipo radio */
+input[type="radio"] {
+    display: none;
+}
+
+/* Estilo ao selecionar um quadrado */
+input[type="radio"]:checked + span {
+    border: 2px solid #fff;
+    box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.3);
+    transform: scale(1.2);
+}
+
+/* Estilização da barra de progresso */
+.progress-container {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 20px 0;
+    height: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    width: 100%; /* Começa com 100% */
+    background-color: #4caf50;
+    transition: width 0,1ms linear;
+}
+
+/* Estilização da barra de progresso */
+.progress-container {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 20px 0;
+    height: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar {
+    height: 100%;
+    width: 100%; /* Começa com 100% */
+    background-color: #4caf50;
+    transition: width 1s linear; /* Transição suave de 1 segundo */
+}
+
+/* Estilo para a página de login */
+/* Estilização da página de login */
+.login-body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login-container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-form label {
+    font-size: 14px;
+    color: #555;
+    text-align: left;
+}
+
+.login-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.login-form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para a página admin.php */
+.admin-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.admin-container .pergunta-lista {
+    margin-bottom: 20px;
+}
+
+.admin-container .pergunta-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-container .pergunta-item button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.admin-container .pergunta-item button:hover {
+    background-color: #d43f3f;
+}
+
+.admin-container form {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.admin-container form input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.admin-container form button {
+    width: 15%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.admin-container form button:hover {
+    background-color: #218838;
+}
+
+.admin-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 10%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.admin-button:hover {
+    background-color: #0056b3;
 }

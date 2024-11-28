@@ -1,9 +1,12 @@
 <?php
-require_once 'config.php';
+function conectarBanco() {
+    $host = 'localhost';
+    $dbname = 'hospital_avaliacoes';
+    $user = 'postgres';
+    $password = 'postgres';
 
-function conectar() {
     try {
-        return new PDO("pgsql:host=".DB_HOST.";port=".DB_PORT.";dbname=".DB_NAME, DB_USER, DB_PASS, [
+        return new PDO("pgsql:host=$host;dbname=$dbname", $user, $password, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
     } catch (PDOException $e) {

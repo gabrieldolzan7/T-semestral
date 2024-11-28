@@ -1,26 +1,32 @@
 <?php
-require_once 'db.php';
+require_once '../src/db.php';
+require_once '../src/funcoes.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pdo = conectar();
-    $feedback = !empty($_POST['feedback']) ? $_POST['feedback'] : null;
-    $dispositivo_id = 1; // ID fixo para o dispositivo neste exemplo. Pode ser configurado conforme o ambiente real.
+    $respostas = $_POST['respostas'] ?? [];
+    $feedback = $_POST['feedback'] ?? null;
 
-    try {
-        $pdo->beginTransaction();
+    // Conectar ao banco
+    $db = conectarBanco();
 
-        // Iterar sobre cada pergunta e salvar a resposta
-        foreach ($_POST['resposta'] as $pergunta_id => $resposta) {
-            $stmt = $pdo->prepare("INSERT INTO avaliacoes (id_dispositivo, id_pergunta, resposta, feedback) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$dispositivo_id, $pergunta_id, $resposta, $feedback]);
-        }
+    // Suponha que o setor_id e dispositivo_id sejam fixos para esta implementação
+    $setorId = 1; // Ajuste conforme o setor
+    $dispositivoId = 1; // Ajuste conforme o dispositivo
 
-        $pdo->commit();
-        header("Location: ../public/obrigado.php");
-        exit;
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        die("Erro ao salvar respostas: " . $e->getMessage());
+    foreach ($respostas as $perguntaId => $nota) {
+        $query = "INSERT INTO avaliacao (setor_id, pergunta_id, dispositivo_id, resposta, feedback) 
+                  VALUES (:setor_id, :pergunta_id, :dispositivo_id, :resposta, :feedback)";
+        $stmt = $db->prepare($query);
+        $stmt->execute([
+            ':setor_id' => $setorId,
+            ':pergunta_id' => $perguntaId,
+            ':dispositivo_id' => $dispositivoId,
+            ':resposta' => $nota,
+            ':feedback' => $feedback
+        ]);
     }
+
+    // Redirecionar para a página de agradecimento
+    header('Location: ../public/obrigado.php');
+    exit();
 }
-?>
