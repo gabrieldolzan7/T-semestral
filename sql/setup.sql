@@ -57,3 +57,16 @@ ALTER TABLE avaliacao
 ADD CONSTRAINT fk_pergunta_id
 FOREIGN KEY (pergunta_id) REFERENCES perguntas(id);
 
+ALTER TABLE perguntas ADD COLUMN setor VARCHAR(255);
+
+CREATE TABLE categorias (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL
+);
+
+INSERT INTO categorias (nome) VALUES 
+('Recepção'), 
+('Enfermagem'), 
+('Emergência'), 
+('Alimentação');
+

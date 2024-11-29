@@ -12,9 +12,12 @@
         <h1>Obrigado pela sua avaliação!</h1>
         <p>Sua opinião é muito importante para nós.</p>
         <p>Você será redirecionado para a página inicial em alguns segundos.</p>
-        <div class="progress-container">
-            <div class="progress-bar"></div>
-        </div>
+        <div id="progress-container" style="display: none;">
+    <h3>Redirecionando...</h3>
+    <div id="progress-bar">
+        <div id="progress-fill"></div>
+    </div>
+</div>
         <a href="index.php">Clique aqui caso não seja redirecionado automaticamente.</a>
     </div>
 </body>

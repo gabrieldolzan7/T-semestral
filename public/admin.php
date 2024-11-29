@@ -1,93 +1,85 @@
 <?php
-session_start();
+require_once '../src/auth.php';
 require_once '../src/db.php';
-require_once '../src/perguntas.php';
+require_once '../src/funcoes.php';
 
-// Verificar autenticação
-if (!isset($_SESSION['usuario'])) {
-    header('Location: login.php');
-    exit;
-}
+// Verificar se o usuário está autenticado
+verificarAutenticacao();
 
-// Adicionar pergunta ao banco de dados
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $texto = $_POST['texto'] ?? '';
-    $setor = $_POST['setor'] ?? '';
+$pdo = conectarBanco();
 
-    if (!empty($texto) && !empty($setor)) {
-        $pdo = conectarBanco();
+// Adicionar pergunta
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nova_pergunta'], $_POST['setor'])) {
+    $novaPergunta = $_POST['nova_pergunta'];
+    $setor = $_POST['setor'];
+
+    if (!empty($novaPergunta) && !empty($setor)) {
         $stmt = $pdo->prepare("INSERT INTO perguntas (texto, setor, status) VALUES (:texto, :setor, TRUE)");
-        $stmt->execute([
-            ':texto' => $texto,
-            ':setor' => $setor
-        ]);
+        $stmt->execute([':texto' => $novaPergunta, ':setor' => $setor]);
         $mensagem = "Pergunta adicionada com sucesso!";
     } else {
-        $mensagem = "Preencha todos os campos.";
+        $mensagem = "Por favor, preencha todos os campos.";
     }
 }
 
-// Obter perguntas existentes
-$pdo = conectarBanco();
-$perguntas = $pdo->query("SELECT * FROM perguntas")->fetchAll(PDO::FETCH_ASSOC);
+// Excluir pergunta
+if (isset($_GET['delete'])) {
+    $perguntaId = $_GET['delete'];
+    $stmt = $pdo->prepare("DELETE FROM perguntas WHERE id = :id");
+    $stmt->execute([':id' => $perguntaId]);
+}
+
+// Obter perguntas cadastradas
+$stmt = $pdo->query("SELECT * FROM perguntas");
+$perguntas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin</title>
     <link rel="stylesheet" href="css/style.css">
-    <title>Administração - Painel</title>
 </head>
 <body>
-    <h1>Painel Administrativo</h1>
+<div class="admin-container">
+        <!-- Formulário fixo no topo -->
+        <div class="formulario-fixo">
+            <form method="POST" action="admin.php">
+                <input type="text" name="nova_pergunta" placeholder="Digite uma nova pergunta" required>
+                <select name="setor" required>
+                    <option value="">Selecione um setor</option>
+                    <option value="Recepção">Recepção</option>
+                    <option value="Enfermagem">Enfermagem</option>
+                    <option value="Emergência">Emergência</option>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Estacionamento">Estacionamento</option>
+                </select>
+                <button type="submit">Adicionar Pergunta</button>
+            </form>
+        </div>
 
-    <!-- Mensagem de sucesso ou erro -->
-    <?php if (!empty($mensagem)): ?>
-        <p class="mensagem"><?php echo $mensagem; ?></p>
-    <?php endif; ?>
+        <!-- Conteúdo principal -->
+        <div class="conteudo">
+            <h2>Perguntas Cadastradas</h2>
 
-    <!-- Formulário de adição de perguntas -->
-    <form action="admin.php" method="POST">
-        <label for="texto">Texto da Pergunta:</label>
-        <input type="text" id="texto" name="texto" required>
+            <!-- Mensagem de status -->
+            <?php if (!empty($mensagem)): ?>
+                <p class="mensagem"><?php echo htmlspecialchars($mensagem); ?></p>
+            <?php endif; ?>
 
-        <label for="setor">Setor:</label>
-        <select id="setor" name="setor" required>
-            <option value="">Selecione o setor</option>
-            <option value="Recepção">Recepção</option>
-            <option value="Enfermagem">Enfermagem</option>
-            <option value="Emergência">Emergência</option>
-            <option value="Alimentação">Alimentação</option>
-        </select>
-
-        <button type="submit">Adicionar Pergunta</button>
-    </form>
-
-    <!-- Lista de perguntas existentes -->
-    <h2>Perguntas Cadastradas</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Texto</th>
-                <th>Setor</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($perguntas as $pergunta): ?>
-                <tr>
-                    <td><?php echo $pergunta['id']; ?></td>
-                    <td><?php echo htmlspecialchars($pergunta['texto']); ?></td>
-                    <td><?php echo htmlspecialchars($pergunta['setor']); ?></td>
-                    <td>
-                        <a href="excluir_pergunta.php?id=<?php echo $pergunta['id']; ?>">Excluir</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            <div class="pergunta-lista">
+                <?php foreach ($perguntas as $pergunta): ?>
+                    <div class="pergunta-item">
+                        <span><?php echo htmlspecialchars($pergunta['texto']); ?> (Setor: <?php echo htmlspecialchars($pergunta['setor']); ?>)</span>
+                        <a href="admin.php?delete=<?php echo $pergunta['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir esta pergunta?');">
+                            <button>Excluir</button>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

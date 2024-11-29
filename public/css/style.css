@@ -121,40 +121,31 @@ input[type="radio"]:checked + span {
 }
 
 /* Estilização da barra de progresso */
-.progress-container {
+#progress-container {
+    text-align: center;
+    margin-top: 20px;
+    display: block;
+}
+
+#progress-bar {
     width: 100%;
-    background-color: #f3f3f3;
-    border-radius: 5px;
-    overflow: hidden;
-    margin: 20px 0;
     height: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.progress-bar {
-    height: 100%;
-    width: 100%; /* Começa com 100% */
-    background-color: #4caf50;
-    transition: width 0,1ms linear;
-}
-
-/* Estilização da barra de progresso */
-.progress-container {
-    width: 100%;
-    background-color: #f3f3f3;
-    border-radius: 5px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
     overflow: hidden;
-    margin: 20px 0;
-    height: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 10px auto;
+    position: relative;
+    direction: ltr; /* Direção padrão da esquerda para a direita */
 }
 
-.progress-bar {
+#progress-fill {
     height: 100%;
-    width: 100%; /* Começa com 100% */
+    width: 100%; /* Inicialmente completa */
     background-color: #4caf50;
-    transition: width 1s linear; /* Transição suave de 1 segundo */
+    transform: translateX(100%); /* A barra começa fora da área visível (à direita) */
+    transition: transform 5s linear; /* Animação fluida por 5 segundos */
 }
+
 
 /* Estilo para a página de login */
 /* Estilização da página de login */
@@ -313,4 +304,144 @@ input[type="radio"]:checked + span {
 
 .admin-button:hover {
     background-color: #0056b3;
+}
+
+/* Botões de seleção do setor */
+.setores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.setor-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 10px;
+    transition: background-color 0.3s;
+}
+
+.setor-button:hover {
+    background-color: #0056b3;
+}
+
+.setor-button i {
+    margin-right: 8px; /* Espaço entre o ícone e o texto */
+    font-size: 18px;
+}
+
+.setor-button:active {
+    transform: translateY(0); /* Volta ao plano original */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Botão desativado */
+.setor-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+.admin-container {
+    padding: 20px;
+}
+
+/* Estilo para o formulário fixo */
+.formulario-fixo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.formulario-fixo form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.formulario-fixo input,
+.formulario-fixo select,
+.formulario-fixo button {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.formulario-fixo button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.formulario-fixo button:hover {
+    background-color: #0056b3;
+}
+
+/* Ajuste para o conteúdo principal */
+.conteudo {
+    margin-top: -150px;
+    position: absolute;
+    
+/* Espaço abaixo do formulário fixo */
+}
+
+/* Lista de perguntas */
+.pergunta-lista {
+    margin-top: 0;
+
+}
+
+.pergunta-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pergunta-item button {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pergunta-item button:hover {
+    background-color: #b02a37;
+}
+
+/* Mensagem de status */
+.mensagem {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    color: #155724;
+    font-size: 14px;
 }
