@@ -8,11 +8,44 @@ $setorSelecionado = $_GET['setor'] ?? null;
 // Obter perguntas ativas com base no setor
 $perguntasAtivas = $setorSelecionado ? obterPerguntasPorSetor($setorSelecionado) : [];
 
+/**
+ * Função para obter perguntas ativas por setor
+ */
 function obterPerguntasPorSetor($setor) {
     $pdo = conectarBanco();
     $stmt = $pdo->prepare("SELECT id, texto FROM perguntas WHERE status = TRUE AND setor = :setor");
     $stmt->execute([':setor' => $setor]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Função para salvar respostas no banco
+ */
+function salvarRespostas($respostas, $feedbacks, $setor) {
+    $pdo = conectarBanco();
+
+    foreach ($respostas as $perguntaId => $resposta) {
+        $feedback = $feedbacks[$perguntaId] ?? null;
+        $stmt = $pdo->prepare("INSERT INTO respostas (pergunta_id, resposta, setor, data_resposta) VALUES (:pergunta_id, :resposta, :setor, NOW())");
+        $stmt->execute([
+            ':pergunta_id' => $perguntaId,
+            ':resposta' => $resposta,
+            ':setor' => $setor
+        ]);
+    }
+}
+
+// Verificar se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $respostas = $_POST['respostas'] ?? [];
+    $feedbacks = $_POST['feedback'] ?? [];
+    $setor = $_POST['setor'] ?? '';
+
+    if (!empty($respostas)) {
+        salvarRespostas($respostas, $feedbacks, $setor);
+        header('Location: obrigado.php');
+        exit;
+    }
 }
 ?>
 
@@ -35,35 +68,34 @@ function obterPerguntasPorSetor($setor) {
             <?php if (!$setorSelecionado): ?>
                 <h2>Selecione o setor que deseja avaliar:</h2>
                 <div class="setores">
-    <a href="index.php?setor=Recepção" class="setor-button">
-        <i class="fas fa-user-check"></i> Recepção
-    </a>
-    <a href="index.php?setor=Enfermagem" class="setor-button">
-        <i class="fas fa-stethoscope"></i> Enfermagem
-    </a>
-    <a href="index.php?setor=Emergência" class="setor-button">
-        <i class="fas fa-ambulance"></i> Emergência
-    </a>
-    <a href="index.php?setor=Alimentação" class="setor-button">
-        <i class="fas fa-utensils"></i> Alimentação
-    </a>
-    <a href="index.php?setor=Estacionamento" class="setor-button">
-        <i class="fas fa-car"></i> Estacionamento
-    </a>
-</div>
-
+                    <a href="index.php?setor=Recepção" class="setor-button">
+                        <i class="fas fa-user-check"></i> Recepção
+                    </a>
+                    <a href="index.php?setor=Enfermagem" class="setor-button">
+                        <i class="fas fa-stethoscope"></i> Enfermagem
+                    </a>
+                    <a href="index.php?setor=Emergência" class="setor-button">
+                        <i class="fas fa-ambulance"></i> Emergência
+                    </a>
+                    <a href="index.php?setor=Alimentação" class="setor-button">
+                        <i class="fas fa-utensils"></i> Alimentação
+                    </a>
+                    <a href="index.php?setor=Estacionamento" class="setor-button">
+                        <i class="fas fa-car"></i> Estacionamento
+                    </a>
+                </div>
             <?php endif; ?>
         </div>
 
         <!-- Formulário para avaliação -->
         <?php if ($setorSelecionado && count($perguntasAtivas) > 0): ?>
-            <form action="obrigado.php" method="POST" id="avaliacaoForm">
+            <form action="index.php" method="POST" id="avaliacaoForm">
                 <input type="hidden" name="setor" value="<?php echo htmlspecialchars($setorSelecionado); ?>">
                 <h2>Avaliando o setor: <?php echo htmlspecialchars($setorSelecionado); ?></h2>
 
                 <div id="pergunta-container">
-                    <?php foreach ($perguntasAtivas as $pergunta): ?>
-                        <div class="pergunta" id="pergunta-<?php echo $pergunta['id']; ?>" style="display: none;">
+                    <?php foreach ($perguntasAtivas as $index => $pergunta): ?>
+                        <div class="pergunta" id="pergunta-<?php echo $index; ?>" style="display: <?php echo $index === 0 ? 'block' : 'none'; ?>;">
                             <p><?php echo htmlspecialchars($pergunta['texto']); ?></p>
                             <div class="escala">
                                 <?php for ($i = 1; $i <= 10; $i++): ?>

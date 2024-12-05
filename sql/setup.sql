@@ -70,3 +70,12 @@ INSERT INTO categorias (nome) VALUES
 ('Emergência'), 
 ('Alimentação');
 
+CREATE TABLE respostas (
+    id SERIAL PRIMARY KEY,
+    pergunta_id INT NOT NULL,
+    resposta TEXT NOT NULL,
+    setor VARCHAR(100),
+    data_resposta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_pergunta FOREIGN KEY (pergunta_id) REFERENCES perguntas(id) ON DELETE CASCADE
+);
+

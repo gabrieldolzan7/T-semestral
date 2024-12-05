@@ -44,42 +44,47 @@ $perguntas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 <div class="admin-container">
-        <!-- Formulário fixo no topo -->
-        <div class="formulario-fixo">
-            <form method="POST" action="admin.php">
-                <input type="text" name="nova_pergunta" placeholder="Digite uma nova pergunta" required>
-                <select name="setor" required>
-                    <option value="">Selecione um setor</option>
-                    <option value="Recepção">Recepção</option>
-                    <option value="Enfermagem">Enfermagem</option>
-                    <option value="Emergência">Emergência</option>
-                    <option value="Alimentação">Alimentação</option>
-                    <option value="Estacionamento">Estacionamento</option>
-                </select>
-                <button type="submit">Adicionar Pergunta</button>
-            </form>
-        </div>
+    <!-- Botão para acessar painel.php -->
+    <div class="painel-navegacao">
+        <a href="painel.php" class="botao-painel">Ver Respostas e Avaliações</a>
+    </div>
 
-        <!-- Conteúdo principal -->
-        <div class="conteudo">
-            <h2>Perguntas Cadastradas</h2>
+    <!-- Formulário fixo no topo -->
+    <div class="formulario-fixo">
+        <form method="POST" action="admin.php">
+            <input type="text" name="nova_pergunta" placeholder="Digite uma nova pergunta" required>
+            <select name="setor" required>
+                <option value="">Selecione um setor</option>
+                <option value="Recepção">Recepção</option>
+                <option value="Enfermagem">Enfermagem</option>
+                <option value="Emergência">Emergência</option>
+                <option value="Alimentação">Alimentação</option>
+                <option value="Estacionamento">Estacionamento</option>
+            </select>
+            <button type="submit">Adicionar Pergunta</button>
+        </form>
+    </div>
 
-            <!-- Mensagem de status -->
-            <?php if (!empty($mensagem)): ?>
-                <p class="mensagem"><?php echo htmlspecialchars($mensagem); ?></p>
-            <?php endif; ?>
+    <!-- Conteúdo principal -->
+    <div class="conteudo">
+        <h2>Perguntas Cadastradas</h2>
 
-            <div class="pergunta-lista">
-                <?php foreach ($perguntas as $pergunta): ?>
-                    <div class="pergunta-item">
-                        <span><?php echo htmlspecialchars($pergunta['texto']); ?> (Setor: <?php echo htmlspecialchars($pergunta['setor']); ?>)</span>
-                        <a href="admin.php?delete=<?php echo $pergunta['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir esta pergunta?');">
-                            <button>Excluir</button>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+        <!-- Mensagem de status -->
+        <?php if (!empty($mensagem)): ?>
+            <p class="mensagem"><?php echo htmlspecialchars($mensagem); ?></p>
+        <?php endif; ?>
+
+        <div class="pergunta-lista">
+            <?php foreach ($perguntas as $pergunta): ?>
+                <div class="pergunta-item">
+                    <span><?php echo htmlspecialchars($pergunta['texto']); ?> (Setor: <?php echo htmlspecialchars($pergunta['setor']); ?>)</span>
+                    <a href="admin.php?delete=<?php echo $pergunta['id']; ?>" onclick="return confirm('Tem certeza que deseja excluir esta pergunta?');">
+                        <button>Excluir</button>
+                    </a>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
+</div>
 </body>
 </html>
